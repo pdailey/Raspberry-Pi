@@ -1,0 +1,345 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fmodern\fcharset0 Courier-Bold;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset0 LucidaGrande;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red183\green0\blue37;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid1\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\margl1440\margr1440\vieww13920\viewh14200\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf2 // Backup Pi (Beta\'85)
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \expnd0\expndtw0\kerning0
+rsync -av --delete-during --exclude-from=/backup/rsync-exclude.txt --rsh="ssh 
+\fs24 \kerning1\expnd0\expndtw0  -o StrictHostKeyChecking=no
+\fs26 \expnd0\expndtw0\kerning0
+" root@[the pi ip]:/ /backup/rpi/\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf2 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 // Update Applications
+\f1\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \expnd0\expndtw0\kerning0
+sudo apt-get update && sudo apt-get dist-upgrade \
+sudo apt-get autoremove
+\fs24 \kerning1\expnd0\expndtw0 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 // Remove Applications\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b0\fs26 \cf2 \expnd0\expndtw0\kerning0
+sudo apt-get remove --purge libreoffice*\
+sudo apt-get clean && sudo apt-get autoremove
+\fs24 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 // Connect\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b0 \cf2 // check devices on network\
+nmap -sn 192.168.0.0/24\
+\
+//connect to raspberry pi at home. \
+ ssh -o StrictHostKeyChecking=no pi@192.168.0.105\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs48 \cf2 \expnd0\expndtw0\kerning0
+Set up file sharing and autodiscovery
+\f1\b0\fs32 \
+On the Pi:\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 sudo apt-get install netatalk\
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 Now from the Mac, open Finder, and hit 
+\f2 \uc0\u8984 
+\f1 K. Enter afp://192.168.0.22 (using the IP address of your Pi).\
+On the Pi:\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 sudo apt-get install avahi-daemon\
+sudo update-rc.d avahi-daemon defaults\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 Now create a file /etc/avahi/services/afpd.service (as root):\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 sudo vim /etc/avahi/services/afpd.service\
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 and add this content:\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 <?xml version="1.0" standalone='no'?><!--*-nxml-*-->\
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\
+<service-group>\
+   <name replace-wildcards="yes">%h</name>\
+   <service>\
+      <type>_afpovertcp._tcp</type>\
+      <port>548</port>\
+   </service>\
+</service-group>\
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 Then run this command:\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 sudo /etc/init.d/avahi-daemon restart\
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 \
+You should now be able to see the Pi in the Finder sidebar.
+\fs24 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 // Node Red\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b0 \cf2 // Run Node Red\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+cd node-red\
+node-red-pi --max-old-space-size=128\kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+// Run Node Red on Startup\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+sudo npm install -g pm2\kerning1\expnd0\expndtw0 \
+\expnd0\expndtw0\kerning0
+pm2 start /usr/local/bin/node-red \'97node-args="--max-old-space-size=128" -- -v\
+\
+pm2 save\
+pm2 startup systemd\
+// visit http://nodered.org/docs/getting-started/running.html for potential error in this step\kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+// See Node-Red Log Files which are stored at 
+\fs32 \expnd0\expndtw0\kerning0
+/var/log/system.log
+\fs24 \kerning1\expnd0\expndtw0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf2 \expnd0\expndtw0\kerning0
+sudo journalctl -f -u nodered -o cat
+\fs24 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+// View cvs logs\
+cat /usr/lib/node_modules/node-red/TempLightLog.csv \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 // Bluetooth
+\f1\b0 \
+// Show all connected devices\
+lsusb\
+\
+// Perform a BLE Scan\
+\pard\pardeftab720\partightenfactor0
+\cf2 sudo hcitool lescan\
+// make sure that we can use BLE w/o sudo\
+// http://unix.stackexchange.com/questions/96106/bluetooth-le-scan-as-non-root\
+hcitool lescan\
+\
+// Allow non-root users to use BLE\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+sudo usermod -G bluetooth -a <username> 	// replace <username> with actual username\
+cat /etc/group | grep bluetooth 	// Check that operation performed successfully (should see: bluetooth:x:111:pi)\kerning1\expnd0\expndtw0 \
+sudo reboot\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 Commands
+\f1\b0 \
+// Sudo the previous command\
+sudo !!\
+\
+// restart the raspberry pi\
+sudo reboot\
+\
+// close ssh connection\
+exit\
+\
+// get current time/date\
+date\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+//ntp won't set the date/time if the current clock is off by more than 1000 seconds.\
+sudo ntpd -q -g \
+//overrides that restriction.\
+\
+// halt a program/process\
+<CONTROL>-C\
+\
+// Turn off the PI\
+sudo halt -p\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 // POWER SAVING
+\f1\b0 \
+// Disable HDMIy\
+sudo vim /etc/rc.local\
+\
+// Add the line\
+/usr/bin/tvservice -o\
+\
+
+\f0\b // Adding RTC \
+// (Pi has 
+\fs28 Dallas DS3231 I2C RTC chip, but DS1307 commands work and are the standard)
+\f1\b0\fs24 \
+// Setup I2C\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf2 sudo apt-get install python-smbus\
+sudo apt-get install i2c-tools\
+\
+sudo raspi-config \
+> Advanced Options > I2C > Yes, enable and yes load by default\kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 sudo reboot\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+sudo i2cdetect -y 1\
+// Remove the module blacklist entry so it can be loaded on boot\
+sudo sed -i 's/blacklist i2c-bcm2708/#blacklist i2c-bcm2708/' /etc/modprobe.d/raspi-blacklist.conf\
+\
+// Load the module now\
+sudo modprobe i2c-bcm2708\
+\
+// Notify Linux of the Dallas RTC device\
+echo ds1307 0x68 | sudo tee /sys/class/i2c-adapter/i2c-1/new_device\
+\
+// Test whether Linux can see our RTC module.\
+sudo hwclock\
+\
+// Read the time off the RTC\
+sudo hwclock -r\
+// Write system time to the RTC\
+sudo hwclock -w\
+\
+// Read from the RTC on Startup\
+sudo vim /etc/modules\
+//Add the line to end of file: \
+rtc-ds1307\
+\
+// Next\'a0you will need to add\'a0the DS1307 device creation at boot \
+sudo vim /etc/rc.local\
+// Add the following lines just before exit 0:\
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device\
+sudo hwclock -s\
+date\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \kerning1\expnd0\expndtw0 // To ensure that the NTP-maintained system clock is periodically saved to the hardware RTC to stop it drifting, I have created in /etc/cron.daily a file called hwRTC. This script updates the RTC from the system clock daily.\
+\
+sudo vim hwRTC\
+\
+#!/bin/sh\
+/sbin/hwclock --systohc -D --noadjfile --utc > /tmp/hwClock.log 2>&1\
+\
+sudo chmod 755 hwRTC\
+ls -al hwRTC\
+-rwxr-xr-x 1 root root 79 Jun 24 20:17 hwRTC\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 // Share files with mac over network
+\f1\b0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs26 \cf2 sudo apt-get update && sudo apt-get install tightvncserver\
+
+\fs24 \expnd0\expndtw0\kerning0
+\
+// Start VNC server\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 vncserver :1\
+\
+sudo apt-get install netatalk
+\fs24 \
+\
+5. WHERE IS THE ON/OFF SWITCH?\
+There is no on/off switch! To switch on, just plug it in. To switch off: If you are in the graphical environment, either exit to the bash prompt or open the terminal. From the bash prompt or terminal shut down the Raspberry Pi by entering \'93sudo halt -h\'94 (without the quotation marks). Wait until all the LEDs except the power LED are off, then wait an additional second to make sure the SD card can finish its wear leveling tasks and write actions. You can now safely unplug the Raspberry Pi. Failure to properly shut the Raspberry Pi may corrupt your SD card, which would mean you would have to re-image it. \ul \ulc3 -General\ulnone  \ul -Top\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 /// Initial Setup
+\f1\b0 \
+\
+http://blog.self.li/post/63281257339/raspberry-pi-part-1-basic-setup-without-cables\
+\
+diskutil list\
+diskutil unmountDisk /dev/disk2\
+sudo dd bs=64 if=/Users/peterdailey/Desktop/R.img of=/dev/disk2\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs30 \cf2 \ulnone Red PWR LED
+\f1\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+on if power OK\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+flashes (or goes out) if the power drops below about 4.63V\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 Green ACT LED
+\f1\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+steady on if no SD card during boot\
+\ls3\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+irregular flashes for SD card access\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 Ethernet Socket Left LED (yellow)
+\f1\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls4\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+on 100-Mbps connection\
+\ls4\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+off 10-Mbps connection\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf2 Ethernet Socket Right LED (green)
+\f1\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls5\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+on if link established\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+flashes for port activity\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\'95	}\expnd0\expndtw0\kerning0
+off if no link is establisheds
+\fs24 \ul \
+}

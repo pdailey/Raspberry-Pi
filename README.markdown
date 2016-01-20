@@ -1,3 +1,15 @@
+# Introduction to the Manual
+The following outlines the steps I use to setup a Raspberry Pi as a remote server collecting data from bluetooth low energy sensors running Arduino Code. It is mostly a reference for myself, but hopefully it proves useful to others.
+
+The system collects data for a week at a time, offline and without a human operator checking its status, so it is rather robust.
+
+#### Features:
+* An external real time clock to keep time without access to a network
+* A Node-Red server collecting data every 15 minutes from a BLE sensor array
+* Several Cron jobs to process csv data files.
+
+In addition, this is a collection of commands I have found useful WRT the Raspberry Pi.
+
 # Initial Setup
 http://blog.self.li/post/63281257339/raspberry-pi-part-1-basic-setup-without-cables
 

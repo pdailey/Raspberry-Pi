@@ -278,6 +278,12 @@ done
 ```
 ## Commands
 ```
+backup the pi
+rsync -avz pi@192.168.0.104:~/backups ~/Pi_Backups/
+
+// See the size of a file
+du -h file.txt
+
 // make a file executable
 chmod u+x somefile.sh
 
